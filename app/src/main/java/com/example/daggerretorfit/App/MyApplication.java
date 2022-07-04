@@ -1,21 +1,22 @@
-package com.example.daggerretorfit;
+package com.example.daggerretorfit.App;
 
 import android.app.Application;
 
-import com.example.daggerretorfit.Component.ApiComponent;
-import com.example.daggerretorfit.Component.DaggerApiComponent;
+import com.example.daggerretorfit.Component.ApplicationComponent;
+
+import com.example.daggerretorfit.Component.DaggerApplicationComponent;
 import com.example.daggerretorfit.Module.ApiModule;
 
 public class MyApplication extends Application {
     private static MyApplication instance;
-    private static ApiComponent apiComponent;
+    private static ApplicationComponent apiComponent;
 
     @Override
     public void onCreate(){
         super.onCreate();
         instance=this;
 
-        apiComponent=DaggerApiComponent.builder().apiModule(new ApiModule()).build();
+        apiComponent= DaggerApplicationComponent.builder().apiModule(new ApiModule()).build();
         apiComponent.injuct(this);
     }
     public static MyApplication getInstance(){
@@ -23,7 +24,7 @@ public class MyApplication extends Application {
             instance=new MyApplication();
         return instance;
     }
-    public ApiComponent getapplication(){
+    public ApplicationComponent getapplication(){
         return apiComponent;
     }
 }

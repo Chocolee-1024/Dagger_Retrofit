@@ -4,43 +4,46 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-import com.example.daggerretorfit.Component.DaggerApiComponent;
-import com.example.daggerretorfit.Module.ApiModule;
-import com.example.daggerretorfit.service.ApiClient;
-import com.example.daggerretorfit.service.ApiService;
-import com.example.daggerretorfit.service.Response;
+
+import com.example.daggerretorfit.App.MyApplication;
+import com.example.daggerretorfit.Component.DaggerMainComponent;
+import com.example.daggerretorfit.Response.AlbumsRespones;
+import com.example.daggerretorfit.Service.ApiClient;
+import com.example.daggerretorfit.Service.ApiService;
+import com.example.daggerretorfit.Response.PostsResponse;
 
 import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
     private ApiService apiService;
     @Inject
     ApiClient apiClient;
-
+    private TextView tv1;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        MyApplication.getInstance().getapplication().injuct(this);
-        DaggerApiComponent.builder().apiModule(new ApiModule()).build().injuct(this);
+
+        DaggerMainComponent.builder().applicationComponent(MyApplication.getInstance().getapplication()).build().inject(this);
         apiService=apiClient.getApiService();
         init();
     }
     public void init(){
-        apiService.getResponse().enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                Log.e("www",response.body().getId());
-            }
+        tv1=(TextView)findViewById(R.id.tv1);
+        button=(Button)findViewById(R.id.button);
 
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Log.e("www","errow"+t);
-            }
-        });
+    }
+    public void ButtonClick(View view){
+        Log.e("www","123");
     }
 }
